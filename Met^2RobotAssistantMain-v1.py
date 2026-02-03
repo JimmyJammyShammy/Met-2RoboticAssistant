@@ -1,15 +1,16 @@
 """
-Met^2RobotAssistantMain-v1.py
-Author: Justin Tran
-Project: Met-2RoboticAssistant
-Description: Main file for the Met^2 Robotic Assistant project.
-Version: 1.0.0
-Date: 02/02/2026
+    Project: Met^2RobotAssistantMain-v1
+    File:    Met^2RobotAssistant-v1.py
+    Author:  Justin Tran
+    Created: 02/02/2026
+    Version: 1.0.0
+    Description:
+        Version 1 of robot main code for Met^2 Robotic Assitant Project 2026.
 """
 
 class RoboticAssistant:
-    """Main class for the Met^2 Robotic Assistant."""
     
+    """Main class for the Met^2 Robotic Assistant."""
     def main():
         print("Robotic Assistant 2026")
 
