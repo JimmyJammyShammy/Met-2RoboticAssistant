@@ -19,6 +19,9 @@ from machine import RTC # Real Time Clock class for trachking time
 from machine import DEEPSLEEP # Deep sleep mode for turning off the robot
 from utime import sleep # Sleep function for delays
 
+# Class Imports
+import Movement
+
 
 class RoboticAssistant:
     
@@ -51,7 +54,7 @@ class RoboticAssistant:
         pin.off()
         print("Finished.")
         
-
+        Movement.forward(2)
 
 
         
