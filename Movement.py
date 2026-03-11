@@ -108,7 +108,7 @@ class Movement:
 
     """
     Movement Functions
-    Interaval in milliseconds (1000ms = 1s)
+    Interval in milliseconds (1000ms = 1s)
     Delay in microseconds (1.000.000us = 1s)
 
     Default Intervals: 5000ms (5s)
