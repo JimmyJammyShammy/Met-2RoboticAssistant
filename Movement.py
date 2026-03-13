@@ -129,7 +129,7 @@ class Movement:
     #Set Pin Direction
     """
     Direction Options:
-    For Tracks: foward, backward, left, right
+    For Tracks: forward, backward, left, right
     For Arm: clockwise, counterclockwise
     """
     def set_dir(self, direction: str, part: str):
@@ -175,6 +175,7 @@ class Movement:
     #Move tracks forward
     def forward(self, interval: int, delay: int):
         self.loop = True
+        self.T.init(period=interval, mode=Timer.ONE_SHOT, callback=lambda t: setattr(self, 'loop', False))  # ← start timer FIRST
         while self.loop:
             self.Out_L_PulPin.value(1)      # Left Forward
             self.Out_R_PulPin.value(1)      # Right Forward
@@ -182,8 +183,6 @@ class Movement:
             self.Out_L_PulPin.value(0)      # Left Off
             self.Out_R_PulPin.value(0)      # Right Off
             time.sleep_us(delay)            # Delay
-        
-        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
 
     #Move tracks backward
     def backward(self, interval: int, delay: int):
@@ -191,7 +190,7 @@ class Movement:
 
         self.Out_L_DirPin.value(0)          # Set left motor direction to backward
         self.Out_R_DirPin.value(1)          # Set right motor direction to backward
-
+        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
         while self.loop:
             self.Out_L_PulPin.value(1)      # Left Backward
             self.Out_R_PulPin.value(1)      # Right Backward
@@ -200,7 +199,7 @@ class Movement:
             self.Out_R_PulPin.value(0)      # Right Off
             time.sleep_us(delay)            # Delay
         
-        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
+        
 
     #Turn left
     def turn_L(self, interval: int, delay: int):
@@ -208,24 +207,22 @@ class Movement:
 
         self.Out_L_DirPin.value(0)          # Set left motor direction to backward
         self.Out_R_DirPin.value(0)          # Set right motor direction to forward
-
+        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
         while self.loop:
-            self.Out_L_PulPin.value(1)      # Left Forward
+            self.Out_L_PulPin.value(1)      # Left Backward
             self.Out_R_PulPin.value(1)      # Right Forward
             time.sleep_us(delay)            # Delay between steps in microseconds, adjust for speed
             self.Out_L_PulPin.value(0)      # Left Off
             self.Out_R_PulPin.value(0)      # Right Off
             time.sleep_us(delay)            # Delay
-        
-        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
         
     #Turn right
     def turn_r(self, interval: int, delay: int):
         self.loop = True
 
-        self.Out_L_DirPin.value(0)          # Set left motor direction to backward
-        self.Out_R_DirPin.value(0)          # Set right motor direction to forward
-
+        self.Out_L_DirPin.value(1)          # Set left motor direction to FORWARD
+        self.Out_R_DirPin.value(1)          # Set right motor direction to BACKWARD
+        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
         while self.loop:
             self.Out_L_PulPin.value(1)      # Left Forward
             self.Out_R_PulPin.value(1)      # Right Forward
@@ -234,8 +231,7 @@ class Movement:
             self.Out_R_PulPin.value(0)      # Right Off
             time.sleep_us(delay)            # Delay
         
-        self.T.init(period= interval, mode= Timer.ONE_SHOT, callback= lambda t: setattr(self, 'loop', False)) #Stop Loop after interval
-
+        
     
 
     
