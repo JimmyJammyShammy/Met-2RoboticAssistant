@@ -5,7 +5,7 @@
     Created: 02/02/2026
     Version: 1.0.0
     Description:
-        Main class for Met^2 Robotic Assitant Project 2026.
+        Main class for Met^2 Robotic Assistant Project 2026.
 """
 # MicroPython imports
     # Some imports will be removed if not used, but are included for future functionality and testing
@@ -17,7 +17,7 @@ from machine import SPI # Hardware SPI communication
 from machine import SoftI2C # Software I2C communication (Inter-Integrated Circuit)
 from machine import I2C # Hardware I2C communication
 from machine import RTC # Real Time Clock class for trachking time
-from machine import DEEPSLEEP # Deep sleep mode for turning off the robot
+import machine  # Import machine module for deepsleep (machine.deepsleep())
 from utime import sleep # Sleep function for delays
 
 # Class Imports
@@ -43,9 +43,8 @@ class RoboticAssistant:
         Main_Movement.forward(2000, Main_Movement.Def_Delay) # Move forward for 2 seconds at Def_Delay, 500 microseconds delay between steps
 
 
-        
-    if __name__ == "__main__":
-        main() # Run the main function of the RoboticAssistant class on startup
+if __name__ == "__main__":
+    RoboticAssistant.main() # Run the main function of the RoboticAssistant class on startup
 
     
 
