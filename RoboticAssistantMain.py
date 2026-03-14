@@ -16,7 +16,7 @@ from machine import SoftSPI # Software SPI communication (Serial Peripheral Inte
 from machine import SPI # Hardware SPI communication
 from machine import SoftI2C # Software I2C communication (Inter-Integrated Circuit)
 from machine import I2C # Hardware I2C communication
-from machine import RTC # Real Time Clock class for trachking time
+from machine import RTC # Real Time Clock class for tracking time
 import machine  # Import machine module for deepsleep (machine.deepsleep())
 from utime import sleep # Sleep function for delays
 
@@ -32,7 +32,7 @@ class RoboticAssistant:
     O = Pin.OUT 
     I = Pin.IN
 
-# Pin Definitions 0-19, 21-23, 25-27, 32-39, Check Board documentation for specific names
+# Pin Definitions 0-19, 21-23, 25-27, 32-39, Check Board documentation for specific names (In discord resources)
 
     """Main class for the Met^2 Robotic Assistant."""
     @staticmethod
