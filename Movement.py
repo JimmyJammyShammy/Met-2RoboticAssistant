@@ -36,29 +36,17 @@ class Movement:
     Arm_Motor_DirPin = 9    # Direction Pin, low(0) clockwise, high(1) counterclockwise
     Arm_Motor_PulPin = 10   # Pulse Pin, step when high, off when low
 
-    #Create IO for left motor
-    In_L_EnaPin = Pin(L_Motor_EnaPin, I)        # Take signal from Enable Pin
-    In_L_DirPin = Pin(L_Motor_DirPin, I)        # Take signal from Direction Pin
-    In_L_PulPin = Pin(L_Motor_PulPin, I)        # Take signal from Pulse Pin
-
+    #Create Output for left motor
     Out_L_EnaPin = Pin(L_Motor_EnaPin, O)       # Send signal to Enable Pin
     Out_L_DirPin = Pin(L_Motor_DirPin, O)       # Send signal to Direction Pin
     Out_L_PulPin = Pin(L_Motor_PulPin, O)       # Send signal to Pulse Pin
 
-    #Create IO for right motor
-    In_R_EnaPin = Pin(R_Motor_EnaPin, I)        # Take signal from Enable Pin
-    In_R_DirPin = Pin(R_Motor_DirPin, I)        # Take signal from Direction Pin
-    In_R_PulPin = Pin(R_Motor_PulPin, I)        # Take signal from Pulse Pin
-
+    #Create Output for right motor
     Out_R_EnaPin = Pin(R_Motor_EnaPin, O)       # Send signal to Enable Pin
     Out_R_DirPin = Pin(R_Motor_DirPin, O)       # Send signal to Direction Pin
     Out_R_PulPin = Pin(R_Motor_PulPin, O)       # Send signal to Pulse Pin
 
-    #Create IO for arm motor
-    In_Arm_EnaPin = Pin(Arm_Motor_EnaPin, I)    # Take signal from Enable Pin
-    In_Arm_DirPin = Pin(Arm_Motor_DirPin, I)    # Take signal from Direction Pin
-    In_Arm_PulPin = Pin(Arm_Motor_PulPin, I)    # Take signal from Pulse Pin
-
+    #Create Output for arm motor
     Out_Arm_EnaPin = Pin(Arm_Motor_EnaPin, O)   # Send signal to Enable Pin
     Out_Arm_DirPin = Pin(Arm_Motor_DirPin, O)   # Send signal to Direction Pin
     Out_Arm_PulPin = Pin(Arm_Motor_PulPin, O)   # Send signal to Pulse Pin
