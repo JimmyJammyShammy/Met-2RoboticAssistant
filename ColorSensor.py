@@ -1,4 +1,4 @@
-from Sensor import Sensor, Pin
+from Sensor import Sensor
 from machine import Pin
 from machine import Timer
 import time
@@ -54,8 +54,15 @@ class ColorSensor(Sensor):
         return data
     
     # Override
-    def loop_sensor_bool(self, bool: bool, sensor: Pin) -> list:
-        self.loop = bool
+    # BEFORE - 'bool' is a Python built-in type, using it as a variable name causes problems
+    #def loop_sensor_bool(self, bool: bool, sensor: Pin):
+        #self.loop = bool
+    # AFTER - renamed to 'running', which clearly describes what it does
+    def loop_sensor_bool(self, running: bool, sensor: Pin):
+        # 'running' is a boolean flag that controls whether the sensor loop should run
+        # True  = start collecting sensor data
+        # False = stop collecting sensor data immediately
+        self.loop = running
         data = []
         while self.loop:
             time.sleep_ms(100)      # Sleep for 100 milliseconds
@@ -63,5 +70,8 @@ class ColorSensor(Sensor):
         return data
 
     # Override 
-    def print_data(self, value: tuple, sensor:Pin): # Print formatted data from the sensor
+    def print_data(self, sensor: Pin):
+    # sensor is used to get a fresh reading right now
+    # value is created inside the method, always current
+    value = self.RGB_Value(sensor)
         print("Color Sensor Value: R: " + str(value[0]) + ", G: " + str(value[1]) + ", B: " + str(value[2])) # Print the RGB values in a formatted string
