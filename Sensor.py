@@ -30,10 +30,6 @@ class Sensor(ABC):
         else:
             return False
     
-    @abstractmethod  
-    def read(self, sensor:Pin) -> int: # Returns a value from the sensor
-        pass
-
     def loop_sensor_interval(self, interval:int, sensor:Pin) -> list: # Interval in milliseconds
         self.loop = True
         data = []
@@ -43,13 +39,9 @@ class Sensor(ABC):
             data.append(sensor.value())   # Read the sensor value
         return data    # Return the last sensor value after the loop ends
 
-    def loop_sensor_bool(self, bool:bool, sensor:Pin) -> list: # Loop until boolean value == false
-        self.loop = bool
-        data = []
-        while self.loop:
-            time.sleep_ms(100)      # Sleep for 100 milliseconds
-            data.append(sensor.value())   # Read the sensor value
-        return data 
+    @abstractmethod  
+    def read(self, sensor:Pin) -> int: # Returns a value from the sensor
+        pass
 
     @abstractmethod
     def print_data(self, sensor:Pin): # Print formatted data from the sensor
