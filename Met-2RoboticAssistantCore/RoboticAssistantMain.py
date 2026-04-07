@@ -28,6 +28,11 @@ class RoboticAssistant:
 # VSCode: Press Run at the bottom next to Reset
 # Look at MicroPico for more documentation
 
+# ESP 32 UIDs
+    # Get from actual ESP when connected
+    Access_Point_UID = b'\x00\x00\x00\x00\x00\x00' # Placeholder UID for the Access Point, will be set to the actual UID of the ESP32 when the Access Point is initialized
+    Station_UID = b'\x00\x00\x00\x00\x00\x00' # Placeholder UID for the Station, will be set to the actual UID of the ESP32 when the Station is initialized
+
 # Pin modes
     O = Pin.OUT 
     I = Pin.IN
