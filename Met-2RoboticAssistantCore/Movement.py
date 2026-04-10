@@ -72,6 +72,11 @@ class Movement:
         Movement.Out_Arm_EnaPin.value(0)    # Enable arm motor
         Movement.Out_Arm_DirPin.value(0)    # Set arm motor direction to clockwise
     
+    def stop(self):                         # Stop all motors
+        Movement.Out_L_EnaPin.value(1)      # Disable left motor
+        Movement.Out_R_EnaPin.value(1)      # Disable right motor
+        Movement.Out_Arm_EnaPin.value(1)    # Disable arm motor
+
     def disable_motor(self, pin: str):
         #Stop all motors
         if pin == "left":
