@@ -9,35 +9,22 @@
 """
 # MicroPython imports
     # Some imports will be removed if not used, but are included for future functionality and testing
-from Sensors.ColorSensor import ColorSensor
-from machine import Pin # Pin class for GPIO control
-from machine import Timer # Timer class for timing functions
-from machine import ADC # ADC class for analog to digital conversion
-from machine import SoftSPI # Software SPI communication (Serial Peripheral Interface)
-from machine import SPI # Hardware SPI communication
-from machine import SoftI2C # Software I2C communication (Inter-Integrated Circuit)
-from machine import I2C # Hardware I2C communication
-from machine import RTC # Real Time Clock class for tracking time
-import machine  # Import machine module for deepsleep (machine.deepsleep())
-from utime import sleep # Sleep function for delays
-import time  # For timing the blue detection period
 
-# Class Imports
-import Movement # Import Movement class for controlling robot movement
+import machine
+from machine import Pin # Pin class for GPIO control
+#import machine  # Import machine module for deepsleep (machine.deepsleep())
+
+try:
+    import Movement
+except ImportError as e:
+    print(f"Error importing Movement module: {e}")
+
 
 class RoboticAssistant:
-# To Run: Connect ESP32 > run > MicroPico > Run current file on Pico
-# VSCode: Press Run at the bottom next to Reset
-# Look at MicroPico for more documentation
-
 # ESP 32 UIDs
     # Get from actual ESP when connected
-    Access_Point_UID = b'\x00\x00\x00\x00\x00\x00' # Placeholder UID for the Access Point, will be set to the actual UID of the ESP32 when the Access Point is initialized
-    Station_UID = b'\x00\x00\x00\x00\x00\x00' # Placeholder UID for the Station, will be set to the actual UID of the ESP32 when the Station is initialized
-
-# Pin modes
-    O = Pin.OUT 
-    I = Pin.IN
+    Access_Point_UID = b' \xe7\xc8\xbab\xe4' #UID for the Access Point, One with the Dot, this will go in the robot
+    Station_UID = b'(\x05\xa5o\xdd\xf0' #UID for the Station, will be the remote
 
 # Pin Definitions 0-19, 21-23, 25-27, 32-39, Check Board documentation for specific names (In discord resources)
 
@@ -46,21 +33,35 @@ class RoboticAssistant:
     def main():
         uid = machine.unique_id() # Get unique ID of the ESP32 for identification
         print("Unique ID:", uid) # Print the unique ID to the console
+        
+        if(uid == RoboticAssistant.Access_Point_UID):
+            print("Access Point Initialized")
+        if(uid == RoboticAssistant.Station_UID):
+            print("Station Initialized")
 
-        Main_Movement = Movement.Movement() # Create instance of Movement class
-        Main_Movement.setup() # Set up pins and directions for movement
+        print("HELLOOOOOOOOO")
 
+        try:
+            RoboticAssistant.init() # Call the initialization function to set up the robot's components
+        except Exception as e:
+            print(f"Error during initialization: {e}")
+        
+        
+ 
+        """
         Color_Sensor = ColorSensor(34, []) # Create instance of ColorSensor class on pin 34 with an empty data list
 
         Color_Sensor.running[0] = True # Set the running flag for the color sensor loop to True to start collecting data
         Color_Sensor.loop_sensor_bool() # Start the color sensor loop that collects RGB values and adds them to the data list while .running[0] is True
-
+        """"""
         # Initial Line Following
+        """
         """
         Set direction to forward
         While blue is detected, keep moving forward
         If blue not deteced, spin right until blue is detected again
         If red is deteced or blue is not detected for 5 seconds, stop movement entirely and stop the color sensor loop
+        """
         """
         while(Color_Sensor.running): #While color sensor is on
             Main_Movement.set_dir("forward", "tracks") # Set movement direction to forward for both tracks
@@ -75,9 +76,12 @@ class RoboticAssistant:
                         Main_Movement.stop() # Stop movement if red is detected or blue lost for too long
                         Color_Sensor.running[0] = False # Stop the color sensor loop
 
-        
-            
-
+        """
+    @staticmethod
+    def init():
+        global Main_Movement
+        Main_Movement = Movement.Movement() # Create instance of Movement class
+        Main_Movement.setup()
                 
         
        
