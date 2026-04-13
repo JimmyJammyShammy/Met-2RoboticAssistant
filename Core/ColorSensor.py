@@ -1,5 +1,4 @@
 from Sensor import Sensor
-from machine import Pin
 from machine import Timer
 import time
 

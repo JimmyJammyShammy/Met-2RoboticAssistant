@@ -27,12 +27,8 @@ class Sensor(ABC):
         self.Sensor_Pin = pin
         self.Sensor = Pin(self.Sensor_Pin, Pin.IN)   
         self.data = data
-
-    def detected(self, value:int) -> bool: # Returns a boolean if the sensor detects the value
-        if self.Sensor.value() == value:
-            return True
-        else:
-            return False
+   
+       
     
     def loop_sensor_interval(self, interval:int) -> list: # Interval in milliseconds
         self.loop = True
@@ -50,6 +46,10 @@ class Sensor(ABC):
 
     @abstractmethod  
     def read(self) -> int: # Returns a value from the sensor
+        pass
+
+    @abstractmethod
+    def detected(self, value:int) -> bool: # Returns a boolean if the sensor detects the value
         pass
 
     @abstractmethod

@@ -13,46 +13,51 @@ from machine import Timer # Timer class for timing functions
 import time # Time module for sleep functions
 
 class Movement:
-# Pin Definitions 0-19, 21-23, 25-27, 32-39, Check Board documentation for specific names
-    # Pin modes
-    O = Pin.OUT 
-    I = Pin.IN
-    Drive_Power = Pin.DRIVE_2 #PLEASE CHECK 20mA / 30 ohm
-
-    #Place Holder Numbers
-    #Motor Pin Numbers
-    #Left Motor Pins
+    # Pin Definitions 0-19 (DO NOT USE 6–11 SPI Flash memory), 21-23, 25-27, 32-39, Check Board documentation for specific names
+    
+    # Place Holder Numbers
+    # Motor Pin Numbers
+    # Left Motor Pins
+    global L_Motor_EnaPin, L_Motor_DirPin, L_Motor_PulPin
     L_Motor_EnaPin = 2      # Enable Pin, turns on motor when low
     L_Motor_DirPin = 5      # Direction Pin, low(0) clockwise, high(1) counterclockwise
-    L_Motor_PulPin = 6      # Pulse Pin, step when high, off when low
+    L_Motor_PulPin = 18      # Pulse Pin, step when high, off when low
 
-    #Right Motor Pins
-    R_Motor_EnaPin = 3      # Enable Pin, turns on motor when low
-    R_Motor_DirPin = 7      # Direction Pin, low(0) clockwise, high(1) counterclockwise
-    R_Motor_PulPin = 8      # Pulse Pin, step when high, off when low
+    # Right Motor Pins
+    global R_Motor_EnaPin, R_Motor_DirPin, R_Motor_PulPin
+    R_Motor_EnaPin = 12      # Enable Pin, turns on motor when low
+    R_Motor_DirPin = 13      # Direction Pin, low(0) clockwise, high(1) counterclockwise
+    R_Motor_PulPin = 19      # Pulse Pin, step when high, off when low
 
-    #Arm Motor Pins
+    # Arm Motor Pins
+    global Arm_Motor_EnaPin, Arm_Motor_DirPin, Arm_Motor_PulPin
     Arm_Motor_EnaPin = 4    # Enable Pin, turns on motor when low
-    Arm_Motor_DirPin = 9    # Direction Pin, low(0) clockwise, high(1) counterclockwise
-    Arm_Motor_PulPin = 10   # Pulse Pin, step when high, off when low
-
-    #Create Output for left motor
-    Out_L_EnaPin = Pin(L_Motor_EnaPin, O)       # Send signal to Enable Pin
-    Out_L_DirPin = Pin(L_Motor_DirPin, O)       # Send signal to Direction Pin
-    Out_L_PulPin = Pin(L_Motor_PulPin, O)       # Send signal to Pulse Pin
-
-    #Create Output for right motor
-    Out_R_EnaPin = Pin(R_Motor_EnaPin, O)       # Send signal to Enable Pin
-    Out_R_DirPin = Pin(R_Motor_DirPin, O)       # Send signal to Direction Pin
-    Out_R_PulPin = Pin(R_Motor_PulPin, O)       # Send signal to Pulse Pin
-
-    #Create Output for arm motor
-    Out_Arm_EnaPin = Pin(Arm_Motor_EnaPin, O)   # Send signal to Enable Pin
-    Out_Arm_DirPin = Pin(Arm_Motor_DirPin, O)   # Send signal to Direction Pin
-    Out_Arm_PulPin = Pin(Arm_Motor_PulPin, O)   # Send signal to Pulse Pin
-
-    #Create Timer object, 1000ms - 1s
+    Arm_Motor_DirPin = 21    # Direction Pin, low(0) clockwise, high(1) counterclockwise
+    Arm_Motor_PulPin = 27   # Pulse Pin, step when high, off when low
+    
+    # Create Timer object, 1000ms - 1s
     T = Timer(0)
+
+    def __init__(self):
+        # Pin modes
+        O = Pin.OUT 
+        Drive_Power = Pin.DRIVE_2 #PLEASE CHECK 20mA / 30 ohm
+
+        #Create Output for left motor
+        self.Out_L_EnaPin = Pin(L_Motor_EnaPin, O)       # Send signal to Enable Pin
+        self.Out_L_DirPin = Pin(L_Motor_DirPin, O)       # Send signal to Direction Pin
+        self.Out_L_PulPin = Pin(L_Motor_PulPin, O)       # Send signal to Pulse Pin
+
+        #Create Output for right motor
+        self.Out_R_EnaPin = Pin(R_Motor_EnaPin, O)       # Send signal to Enable Pin
+        self.Out_R_DirPin = Pin(R_Motor_DirPin, O)       # Send signal to Direction Pin
+        self.Out_R_PulPin = Pin(R_Motor_PulPin, O)       # Send signal to Pulse Pin
+
+        #Create Output for arm motor
+        self.Out_Arm_EnaPin = Pin(Arm_Motor_EnaPin, O)   # Send signal to Enable Pin
+        self.Out_Arm_DirPin = Pin(Arm_Motor_DirPin, O)   # Send signal to Direction Pin
+        self.Out_Arm_PulPin = Pin(Arm_Motor_PulPin, O)   # Send signal to Pulse Pin
+
 
     """
     Setup Function
@@ -63,34 +68,39 @@ class Movement:
     """
     def setup(self):
         #Turn on and set direction of motors
-        Movement.Out_L_EnaPin.value(0)      # Enable left motor
-        Movement.Out_L_DirPin.value(1)      # Set left motor direction to forward
+        self.Out_L_EnaPin.value(0)      # Enable left motor
+        self.Out_L_DirPin.value(1)      # Set left motor direction to forward
         
-        Movement.Out_R_EnaPin.value(0)      # Enable right motor
-        Movement.Out_R_DirPin.value(0)      # Set right motor direction to forward
+        self.Out_R_EnaPin.value(0)      # Enable right motor
+        self.Out_R_DirPin.value(0)      # Set right motor direction to forward
 
-        Movement.Out_Arm_EnaPin.value(0)    # Enable arm motor
-        Movement.Out_Arm_DirPin.value(0)    # Set arm motor direction to clockwise
+        self.Out_Arm_EnaPin.value(0)    # Enable arm motor
+        self.Out_Arm_DirPin.value(0)    # Set arm motor direction to clockwise
     
+    def stop(self):                         # Stop all motors
+        self.Out_L_EnaPin.value(1)      # Disable left motor
+        self.Out_R_EnaPin.value(1)      # Disable right motor
+        self.Out_Arm_EnaPin.value(1)    # Disable arm motor
+
     def disable_motor(self, pin: str):
         #Stop all motors
         if pin == "left":
-            Movement.Out_L_EnaPin.value(1)      # Disable left motor
+            self.Out_L_EnaPin.value(1)      # Disable left motor
         elif pin == "right":
-            Movement.Out_R_EnaPin.value(1)      # Disable right motor
+            self.Out_R_EnaPin.value(1)      # Disable right motor
         elif pin == "arm":
-            Movement.Out_Arm_EnaPin.value(1)    # Disable arm motor
+            self.Out_Arm_EnaPin.value(1)    # Disable arm motor
         else:
             print("Invalid pin. Use 'left', 'right', or 'arm'.")
 
     def enable_motor(self, pin: str):
         #Enable all motors
         if pin == "left":
-            Movement.Out_L_EnaPin.value(0)      # Enable left motor
+            self.Out_L_EnaPin.value(0)      # Enable left motor
         elif pin == "right":
-            Movement.Out_R_EnaPin.value(0)      # Enable right motor
+            self.Out_R_EnaPin.value(0)      # Enable right motor
         elif pin == "arm":
-            Movement.Out_Arm_EnaPin.value(0)    # Enable arm motor
+            self.Out_Arm_EnaPin.value(0)    # Enable arm motor
         else:
             print("Invalid pin. Use 'left', 'right', or 'arm'.")
 
