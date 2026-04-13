@@ -16,8 +16,9 @@ from machine import Pin # Pin class for GPIO control
 
 try:
     import Movement
+    from Wireless_Controller import AccessPoint, WLANStation
 except ImportError as e:
-    print(f"Error importing Movement module: {e}")
+    print(f"Error importing module: {e}")
 
 
 class RoboticAssistant:
@@ -31,23 +32,33 @@ class RoboticAssistant:
     """Main class for the Met^2 Robotic Assistant."""
     @staticmethod
     def main():
+        print("INITIALIZING ROBOTIC ASSISTANT...")
         uid = machine.unique_id() # Get unique ID of the ESP32 for identification
         print("Unique ID:", uid) # Print the unique ID to the console
         
-        if(uid == RoboticAssistant.Access_Point_UID):
+        if(uid == RoboticAssistant.Access_Point_UID and AccessPoint is not None):
             print("Access Point Initialized")
-        if(uid == RoboticAssistant.Station_UID):
+            RobotAP = AccessPoint.AccessPoint() # Create instance of AccessPoint class to set up the robot's Wi-Fi access point
+            RobotAP.Open_Socket() # Open a socket to listen for commands from the station once a client connects to the access point
+            print ("Current Connnected Clients: ", RobotAP.Get_Connected_Clients()) # Print the list of connected clients to the console for debugging purposes
+            RobotAP.Get_Command() # Start listening for commands from the station to control the robot's movement based on the received commands
+        
+        if(uid == RoboticAssistant.Station_UID and WLANStation is not None):
             print("Station Initialized")
+            RobotStation = WLANStation.WirelessController('ESP-AP', 'robot') # Create instance of WLANStation class to allow the Wireless controller to connect to the robot
+            RobotStation.connect() # Connect the station to the access point to allow for wireless communication between the remote and the robot
+            print("Station IP Address:", RobotStation.Get_IP()) # Print the IP address assigned to the station by the access point once connected for debugging purposes
+            RobotStation.Controller() # Start the controller function to read button states and send commands to the
 
-        print("HELLOOOOOOOOO")
 
-        try:
+        if(Movement is None):
+            print("Movement module not found. Please check the import and ensure the Movement.py file is in the same directory.")
+            return
+        else:
             RoboticAssistant.init() # Call the initialization function to set up the robot's components
-        except Exception as e:
-            print(f"Error during initialization: {e}")
-        
-        
- 
+
+
+        # For Later
         """
         Color_Sensor = ColorSensor(34, []) # Create instance of ColorSensor class on pin 34 with an empty data list
 
@@ -77,6 +88,8 @@ class RoboticAssistant:
                         Color_Sensor.running[0] = False # Stop the color sensor loop
 
         """
+
+        
     @staticmethod
     def init():
         global Main_Movement
@@ -92,6 +105,5 @@ if __name__ == "__main__":
     RoboticAssistant.main() # Run the main function of the RoboticAssistant class on startup
 
     
-
 
 
